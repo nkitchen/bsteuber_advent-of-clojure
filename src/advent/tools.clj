@@ -9,10 +9,11 @@
   (Integer/parseInt s 2))
 
 (defn data-file [file]
-  (let [dir (->> *ns*
-                 str
-                 (str/replace "-" "_")
-                 (str/replace "." "/"))]
+  (let [dir (-> *ns*
+                str
+                (str/replace "-" "_")
+                (str/replace "." "/"))]
+    (prn "dir" dir)
     (str "src/" dir "/" file ".txt")))
 
 (defn read-lines [file]
