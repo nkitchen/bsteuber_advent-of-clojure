@@ -12,7 +12,8 @@
   (let [dir (-> *ns*
                 str
                 (str/replace "-" "_")
-                (str/replace "." "/"))]
+                (str/replace "." "/")
+                (str/replace "core" ""))]
     (prn "dir" dir)
     (str "src/" dir "/" file ".txt")))
 
