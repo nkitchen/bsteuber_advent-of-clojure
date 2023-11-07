@@ -3,7 +3,7 @@
             [clojure.string :as str]))
 
 (defn read-int [s]
-  (Integer/parseInt s))
+  (Integer/parseInt (str s)))
 
 (defn read-binary [s]
   (Integer/parseInt s 2))
@@ -14,7 +14,6 @@
                 (str/replace "-" "_")
                 (str/replace "." "/")
                 (str/replace "core" ""))]
-    (prn "dir" dir)
     (str "src/" dir "/" file ".txt")))
 
 (defn read-lines [file]
