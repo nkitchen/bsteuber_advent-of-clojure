@@ -27,6 +27,14 @@
              "abcdefg"
              "abcdfg"])
 
+(defn lookup-digit [s]
+  (let [s (apply str (sort s))]
+    (->> digits
+         (map-indexed vector)
+         (some (fn [[i letters]]
+                 (when (= s letters)
+                   i))))))
+
 (def unique-digit-count?
   (->> digits
        (map count)
@@ -45,7 +53,6 @@
        count))
 
 (defn match-digit [possible-mappings digit]
-  (prn "match-digit" digit possible-mappings)
   (let [matching (->> digits
                       (filter (fn [actual-digit]
                                 (and (= (count digit)
@@ -73,29 +80,31 @@
 (def used-chars (into #{} "abcdefg"))
 
 (defn rec-solve [possible-mappings first-digit remaining-digits]
-  (prn "rec-solve" first-digit remaining-digits possible-mappings)
   (let [possible-mappings (match-digits possible-mappings remaining-digits)]
-    (prn "after-match" possible-mappings)
     (cond
-      (empty? remaining-digits)
+      (nil? first-digit)
       possible-mappings
 
       (some empty? (vals possible-mappings))
-      (do (prn "fail")
-          nil)
+      nil
 
       :else
-      (let [[first-letter & remaining-letters] (first remaining-digits)]
+      (let [[first-letter & remaining-letters] first-digit]
         (some (fn [target-letter]
-                (println first-letter "->" target-letter)
                 (let [possible-mappings (-> possible-mappings
                                             (update-vals #(disj % target-letter))
                                             (assoc first-letter #{target-letter}))
                       remaining-digits (if (empty? remaining-letters)
                                          (next remaining-digits)
-                                         (cons remaining-letters (next remaining-digits)))]
-                  (prn "map aft" possible-mappings)
-                  (rec-solve possible-mappings remaining-digits)))
+                                         remaining-digits)
+                      continue-first? (seq remaining-letters)
+                      next-first (if continue-first?
+                                   remaining-letters
+                                   (first remaining-digits))
+                      next-remaining (if continue-first?
+                                       remaining-digits
+                                       (next remaining-digits))]
+                  (rec-solve possible-mappings next-first next-remaining)))
               (possible-mappings first-letter))))))
 
 (defn solve-wiring [{:keys [input output]}]
@@ -104,19 +113,32 @@
         possible-mappings (->> used-chars
                                (map (fn [ch]
                                       [ch used-chars]))
-                               (into {}))]
-    (rec-solve possible-mappings given-digits)))
+                               (into {}))
+        solution (rec-solve (match-digits possible-mappings given-digits)
+                            (first given-digits)
+                            (next given-digits))]
+    (update-vals solution first)))
 
 (defn part-2 [file]
   (->> file
        read-input
-       (take 1)
-       (mapv solve-wiring)))
-
-(def sample "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf")
-
-(solve-wiring (read-wiring sample))
+       (map (fn [data]
+              (let [wiring (solve-wiring data)
+                    out-digits (->> data
+                                    :output
+                                    (mapv (fn [out-letters]
+                                            (->> out-letters
+                                                 (map wiring)
+                                                 (apply str)
+                                                 lookup-digit))))]
+                (->> out-digits
+                     (apply str)
+                     tools/read-int))))
+       (apply +)))
 
 (comment
   (part-1 "test")
-  (part-1 "input"))
+  (part-1 "input")
+  (part-2 "test2")
+  (part-2 "test")
+  (part-2 "input"))
