@@ -1,6 +1,5 @@
 (ns advent.year-2021.day-24.core
   (:require [advent.tools :as tools]
-            [clojure.pprint :refer [pprint]]
             [clojure.string :as str]))
 
 (defn read-input [file]

@@ -5,6 +5,9 @@
 (defn read-int [s]
   (Integer/parseInt (str s)))
 
+(defn read-long [s]
+  (Long/parseLong (str s)))
+
 (defn read-binary [s]
   (Integer/parseInt s 2))
 
