@@ -106,3 +106,11 @@
   (-> (init-state program input)
       run-states
       last))
+
+(defn next-output [state input]
+  (let [state (->> (assoc state :input input)
+                   run-states
+                   (drop-while (comp empty? :output))
+                   first)]
+    [(first (:output state))
+     (assoc state :output [])]))

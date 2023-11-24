@@ -29,3 +29,16 @@
        (remove #{'("")})
        doall))
 
+(defn gcd [x y]
+  (loop [factor (min x y)]
+    (if (and (zero? (mod x factor))
+             (zero? (mod y factor)))
+      factor
+      (recur (dec factor)))))
+
+(defn lcm
+  ([x y]
+   (/ (* x y)
+      (gcd x y)))
+  ([x y & more]
+   (apply lcm (lcm x y) more)))

@@ -55,20 +55,6 @@
                        steps)]
     (calc-energy end-state)))
 
-(defn gcd [x y]
-  (loop [factor (min x y)]
-    (if (and (zero? (mod x factor))
-             (zero? (mod y factor)))
-      factor
-      (recur (dec factor)))))
-
-(defn lcm
-  ([x y]
-   (/ (* x y)
-      (gcd x y)))
-  ([x y & more]
-   (apply lcm (lcm x y) more)))
-
 (defn part-2 [file]
   (let [positions (read-input file)
         velocities (vec (repeat 4
@@ -87,7 +73,7 @@
                                  (some (fn [[i state]]
                                          (when (= state init-state)
                                            i)))))))]
-    (apply lcm cycles)))
+    (apply tools/lcm cycles)))
 
 (comment
   (part-1 "test" 10)
