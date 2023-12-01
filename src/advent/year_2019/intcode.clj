@@ -31,6 +31,7 @@
 (defn binary-op [op-fn state flags]
   (let [[x y result-pos] (fetch-args state [:in :in :out] flags)
         result (op-fn x y)]
+    (assert (some? result) (str "No result" op-fn x y))
     (-> state
         (update :position + 4)
         (update :program assoc result-pos result))))
@@ -38,6 +39,7 @@
 (defn fetch-input [state flags]
   (let [[result-pos] (fetch-args state [:out] flags)
         input (-> state :input first)]
+    (assert input "No input left")
     (-> state
         (update :position + 2)
         (update :program assoc result-pos input)

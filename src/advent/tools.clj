@@ -3,10 +3,14 @@
             [clojure.string :as str]))
 
 (defn read-int [s]
-  (Integer/parseInt (str s)))
+  (try
+    (Integer/parseInt (str s))
+    (catch Exception _)))
 
 (defn read-long [s]
-  (Long/parseLong (str s)))
+  (try
+    (Long/parseLong (str s))
+    (catch Exception _)))
 
 (defn read-binary [s]
   (Integer/parseInt s 2))
@@ -22,6 +26,18 @@
 (defn read-lines [file]
   (with-open [rdr (io/reader (data-file file))]
     (doall (line-seq rdr))))
+
+(defn read-grid [file read-char-fn]
+  (->> file
+       read-lines
+       (map-indexed (fn [y line]
+                      (->> line
+                           (map-indexed (fn [x ch]
+                                          (when-let [res (read-char-fn ch)]
+                                            [[x y] res]))))))
+       (apply concat)
+       (filter some?)
+       (into {})))
 
 (defn read-blocks [file]
   (->> (read-lines file)
