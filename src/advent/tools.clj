@@ -45,6 +45,11 @@
        (remove #{'("")})
        doall))
 
+(defn digit? [ch]
+  (<= (int \0)
+      (int ch)
+      (int \9)))
+
 (defn gcd [x y]
   (loop [factor (min x y)]
     (if (and (zero? (mod x factor))
