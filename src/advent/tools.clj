@@ -27,17 +27,22 @@
   (with-open [rdr (io/reader (data-file file))]
     (doall (line-seq rdr))))
 
-(defn read-grid [file read-char-fn]
-  (->> file
-       read-lines
-       (map-indexed (fn [y line]
-                      (->> line
-                           (map-indexed (fn [x ch]
-                                          (when-let [res (read-char-fn ch)]
-                                            [[x y] res]))))))
-       (apply concat)
-       (filter some?)
-       (into {})))
+(defn read-grid
+  ([file]
+   (read-grid file identity))
+  ([file read-char-fn]
+   (->> file
+        read-lines
+        (map-indexed (fn [y line]
+                       (->> line
+                            (map-indexed (fn [x ch]
+                                           [[x y] ch])))))
+        (apply concat)
+        (map (fn [[point ch]]
+               (when-let [res (read-char-fn ch)]
+                 [point res])))
+        (filter some?)
+        (into {}))))
 
 (defn read-blocks [file]
   (->> (read-lines file)
