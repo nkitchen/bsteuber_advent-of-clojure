@@ -15,6 +15,9 @@
 (defn read-binary [s]
   (Integer/parseInt s 2))
 
+(defn read-hex [s]
+  (Integer/parseInt s 16))
+
 (defn data-file [file]
   (let [dir (-> *ns*
                 str
@@ -43,6 +46,11 @@
                  [point res])))
         (filter some?)
         (into {}))))
+
+(defn read-grid-dimensions [file]
+  (let [lines (read-lines file)]
+    {:rows (count lines)
+     :cols (count (first lines))}))
 
 (defn read-blocks [file]
   (->> (read-lines file)
