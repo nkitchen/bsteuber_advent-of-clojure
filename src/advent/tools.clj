@@ -18,13 +18,16 @@
 (defn read-hex [s]
   (Integer/parseInt s 16))
 
+(defn current-directory []
+  (str "src/"
+       (-> *ns*
+           str
+           (str/replace "-" "_")
+           (str/replace "." "/")
+           (str/replace "core" ""))))
+
 (defn data-file [file]
-  (let [dir (-> *ns*
-                str
-                (str/replace "-" "_")
-                (str/replace "." "/")
-                (str/replace "core" ""))]
-    (str "src/" dir "/" file ".txt")))
+  (str (current-directory) "/" file ".txt"))
 
 (defn read-lines [file]
   (with-open [rdr (io/reader (data-file file))]
