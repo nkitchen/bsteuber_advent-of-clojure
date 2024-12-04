@@ -3,12 +3,12 @@
             [advent.tools :as tools]))
 
 (def pipe-mapping
-  {\| [grid/up grid/down]
-   \- [grid/left grid/right]
-   \L [grid/up grid/right]
-   \J  [grid/up grid/left]
-   \7  [grid/down grid/left]
-   \F  [grid/down grid/right]})
+  {\| [grid/north grid/south]
+   \- [grid/west grid/east]
+   \L [grid/north grid/east]
+   \J  [grid/north grid/west]
+   \7  [grid/south grid/west]
+   \F  [grid/south grid/east]})
 
 (defn read-input [file]
   (->> file

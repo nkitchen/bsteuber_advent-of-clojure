@@ -72,10 +72,10 @@
 (defn grid-border [{:keys [rows cols]} dir]
   (let [[x-range y-range]
         (condp = dir
-          grid/left [[0] (range rows)]
-          grid/right [[(dec cols)] (range rows)]
-          grid/up [(range cols) [0]]
-          grid/down [(range cols) [(dec rows)]])]
+          grid/west [[0] (range rows)]
+          grid/east [[(dec cols)] (range rows)]
+          grid/north [(range cols) [0]]
+          grid/south [(range cols) [(dec rows)]])]
     (for [x x-range
           y y-range]
       [x y])))
@@ -83,7 +83,7 @@
 (defn part-2 [file]
   (let [{:keys [grid start]} (read-input file)
         dims (tools/read-grid-dimensions file)]
-    (calc-border-profile grid [start] (grid-border dims grid/right))))
+    (calc-border-profile grid [start] (grid-border dims grid/east))))
 
 (comment
   (part-1 "test" 6)

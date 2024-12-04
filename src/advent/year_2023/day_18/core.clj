@@ -10,10 +10,10 @@
        (mapv (fn [line]
                (let [[dir steps _] (str/split line #" ")]
                  {:dir (case dir
-                         "R" grid/right
-                         "L" grid/left
-                         "U" grid/up
-                         "D" grid/down)
+                         "R" grid/east
+                         "L" grid/west
+                         "U" grid/north
+                         "D" grid/south)
                   :steps (tools/read-int steps)})))))
 
 (defn read-input-part-2 [file]
@@ -24,16 +24,16 @@
                              last
                              (str/replace #"[()#]" ""))
                      dir (case (last hex)
-                           \0 grid/right
-                           \1 grid/down
-                           \2 grid/left
-                           \3 grid/up)
+                           \0 grid/east
+                           \1 grid/south
+                           \2 grid/west
+                           \3 grid/north)
                      steps (tools/read-hex
                             (apply str (butlast hex)))]
                  {:dir dir
                   :steps steps})))))
 
-(def horizontal? #{grid/left grid/right})
+(def horizontal? #{grid/west grid/east})
 
 (defn path-points [path]
   (loop [[line & next-line] path
@@ -75,19 +75,19 @@
                       steps (when (horizontal? dir)
                               (if start-dir?
                                 (condp = [before-dir after-dir]
-                                  [grid/up grid/up] steps
-                                  [grid/down grid/down] steps
-                                  [grid/up grid/down] inc-steps
-                                  [grid/down grid/up] dec-steps
+                                  [grid/north grid/north] steps
+                                  [grid/south grid/south] steps
+                                  [grid/north grid/south] inc-steps
+                                  [grid/south grid/north] dec-steps
                                   (throw (ex-info "Unexpected before / after dir"
                                                   {:before-dir before-dir
                                                    :after-dir after-dir})))
                                 (-
                                  (condp = [before-dir after-dir]
-                                   [grid/up grid/up] steps
-                                   [grid/down grid/down] steps
-                                   [grid/up grid/down] dec-steps
-                                   [grid/down grid/up] inc-steps
+                                   [grid/north grid/north] steps
+                                   [grid/south grid/south] steps
+                                   [grid/north grid/south] dec-steps
+                                   [grid/south grid/north] inc-steps
                                    (throw (ex-info "Unexpected before / after dir"
                                                    {:before-dir before-dir
                                                     :after-dir after-dir}))))))]

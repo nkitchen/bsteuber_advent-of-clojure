@@ -4,22 +4,22 @@
 
 (defn next-beam-states [grid [point direction]]
   (let [ch          (grid point)
-        horizontal? (#{grid/left grid/right} direction)
+        horizontal? (#{grid/west grid/east} direction)
         directions  (case ch
                       \. [direction]
-                      \/ [({grid/left grid/down
-                            grid/right grid/up
-                            grid/up grid/right
-                            grid/down grid/left} direction)]
-                      \\ [({grid/left grid/up
-                            grid/right grid/down
-                            grid/up grid/left
-                            grid/down grid/right} direction)]
+                      \/ [({grid/west grid/south
+                            grid/east grid/north
+                            grid/north grid/east
+                            grid/south grid/west} direction)]
+                      \\ [({grid/west grid/north
+                            grid/east grid/south
+                            grid/north grid/west
+                            grid/south grid/east} direction)]
                       \- (if horizontal?
                            [direction]
-                           [grid/left grid/right])
+                           [grid/west grid/east])
                       \| (if horizontal?
-                           [grid/up grid/down]
+                           [grid/north grid/south]
                            [direction]))]
     (->> directions
          (map (fn [dir]
@@ -44,7 +44,7 @@
 
 (defn part-1 [file]
   (let [grid (tools/read-grid file)
-        start [[0 0] grid/right]]
+        start [[0 0] grid/east]]
     (solve grid start)))
 
 (defn part-2 [file]
@@ -52,13 +52,13 @@
         {:keys [rows cols]} (tools/read-grid-dimensions file)]
     (->> (concat
           (for [x (range cols)]
-            [[x 0] grid/down])
+            [[x 0] grid/south])
           (for [x (range cols)]
-            [[x (dec rows)] grid/up])
+            [[x (dec rows)] grid/north])
           (for [y (range rows)]
-            [[0 y] grid/right])
+            [[0 y] grid/east])
           (for [y (range rows)]
-            [[(dec cols) y] grid/left]))
+            [[(dec cols) y] grid/west]))
          (map (partial solve grid))
          (apply max))))
 

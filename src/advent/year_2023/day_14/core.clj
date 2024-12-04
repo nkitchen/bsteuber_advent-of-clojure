@@ -71,15 +71,15 @@
 
 (defn part-1 [file]
   (let [init-state (read-input file)
-        result (tilt init-state grid/up)]
+        result (tilt init-state grid/north)]
     (count-north-load result)))
 
 (defn run-cycle [state]
   (-> state
-      (tilt grid/up)
-      (tilt grid/left)
-      (tilt grid/down)
-      (tilt grid/right)))
+      (tilt grid/north)
+      (tilt grid/west)
+      (tilt grid/south)
+      (tilt grid/east)))
 
 (defn part-2 [file]
   (let [init-state (read-input file)

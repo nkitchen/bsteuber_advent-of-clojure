@@ -26,8 +26,8 @@
 (defn solve [{:keys [start end grid]} stream-fn]
   (loop [open-list (priority-map-keyfn
                     first
-                    [start grid/right] [0 0]
-                    [start grid/down] [0 0])
+                    [start grid/east] [0 0]
+                    [start grid/south] [0 0])
          closed-list #{}]
     (when-let [[current-node [_ total-cost]] (first open-list)]
       (if (= (first current-node) end)

@@ -7,11 +7,11 @@
         grid (tools/read-grid file
                               (fn [ch]
                                 (case ch
-                                  \. grid/directions
-                                  \> [grid/right]
-                                  \v [grid/down]
-                                  \< [grid/left]
-                                  \^ [grid/up]
+                                  \. grid/directions-4
+                                  \> [grid/east]
+                                  \v [grid/south]
+                                  \< [grid/west]
+                                  \^ [grid/north]
                                   nil)))
         start [1 0]
         end [(- cols 2) (- rows 1)]]
@@ -64,5 +64,3 @@
 (comment
   (part-1 "test")
   (part-1 "input"))
-
-
