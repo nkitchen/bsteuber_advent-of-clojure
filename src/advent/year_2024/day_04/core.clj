@@ -4,8 +4,7 @@
    [advent.grid :as grid]))
 
 (defn read-input [file]
-  (merge {:grid (tools/read-grid file)}
-         (tools/read-grid-dimensions file)))
+  (tools/read-grid-with-dimensions file))
 
 (defn part-1 [file]
   (let [{:keys [grid]

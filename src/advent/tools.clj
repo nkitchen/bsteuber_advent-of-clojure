@@ -55,6 +55,13 @@
     {:rows (count lines)
      :cols (count (first lines))}))
 
+(defn read-grid-with-dimensions
+  ([file]
+   (read-grid-with-dimensions file identity))
+  ([file read-char-fn]
+   (assoc (read-grid-dimensions file)
+          :grid (read-grid file read-char-fn))))
+
 (defn read-blocks [file]
   (->> (read-lines file)
        (partition-by empty?)
