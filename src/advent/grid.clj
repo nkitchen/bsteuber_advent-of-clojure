@@ -1,12 +1,21 @@
 (ns advent.grid)
 
+(defn plus [point-1 point-2]
+  (mapv + point-1 point-2))
+
+(defn minus [point-1 point-2]
+  (mapv - point-1 point-2))
+
+(defn times [scalar point]
+  (mapv (partial * scalar) point))
+
 (defn go-dir
   ([point direction]
    (go-dir point direction 1))
   ([point direction steps]
    (->> direction
-        (map (partial * steps))
-        (mapv + point))))
+        (times steps)
+        (plus point))))
 
 (def west [-1 0])
 (def east [1 0])
@@ -52,3 +61,7 @@
   (for [x (range rows)
         y (range cols)]
     [x y]))
+
+(defn on-grid? [{:keys [rows cols]} [x y]]
+  (and (<= 0 x (dec cols))
+       (<= 0 y (dec rows))))

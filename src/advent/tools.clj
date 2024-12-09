@@ -86,3 +86,16 @@
       (gcd x y)))
   ([x y & more]
    (apply lcm (lcm x y) more)))
+
+(defn value-multimap [m]
+  (->> m
+       (group-by val)
+       (map (fn [[value entries]]
+              [value (mapv key entries)]))
+       (into {})))
+
+(defn all-pairs [v]
+  (let [n (count v)]
+    (for [i (range n)
+          j (range (inc i) n)]
+      [(nth v i) (nth v j)])))
