@@ -18,7 +18,7 @@
 ;; (xb * ya - yb * xa) * b = x * ya - y * xa
 ;; b = ( x * ya - y * xa ) / (xb * ya - yb * xa)
 ;;
-;; if xb * ya - yb * xa is zero, the equations are linear dependent.
+;; if xb * ya - yb * xa is zero, the left sides are linear dependent.
 ;; If x * ya - y * xa is also zero, there are infinitely many solutions,
 ;; which fortunately doesn't happen.
 ;; Otherwise, there are no solutions.

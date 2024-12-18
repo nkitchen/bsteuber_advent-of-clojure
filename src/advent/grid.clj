@@ -31,6 +31,13 @@
 (def diagonals [north-west north-east south-west south-east])
 (def directions-8 (into directions-4 diagonals))
 
+(defn read-direction [ch]
+  (case ch
+    \> east
+    \^ north
+    \< west
+    \v south))
+
 (def opposite-dir
   {north south
    south north

@@ -33,12 +33,11 @@
   (with-open [rdr (io/reader (data-file file))]
     (doall (line-seq rdr))))
 
-(defn read-grid
-  ([file]
-   (read-grid file identity))
-  ([file read-char-fn]
-   (->> file
-        read-lines
+(defn read-grid-from-lines
+  ([lines]
+   (read-grid-from-lines lines identity))
+  ([lines read-char-fn]
+   (->> lines
         (map-indexed (fn [y line]
                        (->> line
                             (map-indexed (fn [x ch]
@@ -49,6 +48,12 @@
                  [point res])))
         (filter some?)
         (into {}))))
+
+(defn read-grid
+  ([file]
+   (read-grid-from-lines (read-lines file)))
+  ([file read-char-fn]
+   (read-grid-from-lines (read-lines file) read-char-fn)))
 
 (defn read-grid-dimensions [file]
   (let [lines (read-lines file)]
