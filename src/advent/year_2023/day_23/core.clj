@@ -1,4 +1,4 @@
-(ns advent.year-2023.day-23
+(ns advent.year-2023.day-23.core
   (:require [advent.tools :as tools]
             [advent.grid :as grid]))
 
