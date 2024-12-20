@@ -1,4 +1,6 @@
-(ns advent.grid)
+(ns advent.grid
+  (:require
+   [advent.tools :as tools]))
 
 (defn plus [point-1 point-2]
   (mapv + point-1 point-2))
@@ -16,6 +18,31 @@
    (->> direction
         (times steps)
         (plus point))))
+
+(defn read-from-lines [lines read-char-fn]
+  (->> lines
+       (map-indexed (fn [y line]
+                      (->> line
+                           (map-indexed (fn [x ch]
+                                          [[x y] ch])))))
+       (apply concat)
+       (reduce (fn [data [point ch]]
+                 (let [content (read-char-fn ch)]
+                   (cond
+                     (nil? content)
+                     data
+
+                     (and (vector? content)
+                          (= :extra (first content)))
+                     (assoc data (second content) point)
+
+                     :else
+                     (assoc-in data [:grid point] content))))
+               {:rows (count lines)
+                :cols (count (first lines))})))
+
+(defn read-from-file [file read-char-fn]
+  (read-from-lines (tools/read-lines file) read-char-fn))
 
 (def west [-1 0])
 (def east [1 0])
