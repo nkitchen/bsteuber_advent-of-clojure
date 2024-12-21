@@ -65,6 +65,13 @@
     \< west
     \v south))
 
+(defn format-direction [dir]
+  (condp = dir
+    east \>
+    north \^
+    west \<
+    south \v))
+
 (def opposite-dir
   {north south
    south north
