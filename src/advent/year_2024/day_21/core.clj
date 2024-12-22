@@ -23,23 +23,14 @@
    \v [1 1]
    \> [2 1]})
 
-(defn inverse-map [m]
-  (->> m
-       (map (fn [[k v]]
-              [v k]))
-       (into {})))
-
-(def numeric-grid (inverse-map numeric-keypad))
-(def directional-grid (inverse-map directional-keypad))
-
-(defn possible-paths [keypad grid from to]
+(defn possible-paths [keypad on-grid? from to]
   (let [start-point (keypad from)
         end-point (keypad to)]
     (loop [explore [start-point]
            known-paths {start-point [""]}]
       (when (empty? explore)
         (throw (ex-info (str "No path found"
-                             {:grid grid
+                             {:grid on-grid?
                               :from from
                               :to to})
                         {})))
@@ -51,7 +42,7 @@
                                     (->> grid/directions-4
                                          (map (fn [dir]
                                                 (let [neighb (grid/go-dir point dir)]
-                                                  (when (and (grid neighb)
+                                                  (when (and (on-grid? neighb)
                                                              (not (known-paths neighb)))
                                                     [neighb (mapv #(str % (grid/format-direction dir))
                                                                   paths)]))))
@@ -65,8 +56,14 @@
                                   todo)]
           (recur explore known-paths))))))
 
-(def numeric-paths (memoize (partial possible-paths numeric-keypad numeric-grid)))
-(def directional-paths (memoize (partial possible-paths directional-keypad directional-grid)))
+(defn make-paths-fn [keypad]
+  (let [on-grid? (->> keypad
+                      vals
+                      (into #{}))]
+    (memoize (partial possible-paths keypad on-grid?))))
+
+(def numeric-paths (make-paths-fn numeric-keypad))
+(def directional-paths (make-paths-fn directional-keypad))
 
 (def paths-cache (atom {}))
 
