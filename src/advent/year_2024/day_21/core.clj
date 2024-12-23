@@ -77,8 +77,8 @@
       length
       (recur more-keys
              next-key
-             (+' length
-                 (best-path-length level current-key next-key))))))
+             (+ length
+                (best-path-length level current-key next-key))))))
 
 (defn best-path-length [level from to]
   (or (@paths-cache [level from to])
@@ -100,9 +100,9 @@
   (->> file
        tools/read-lines
        (map (fn [line]
-              (*' (best-word-length directional-robots line)
-                  (tools/read-long (re-find #"\d+" line)))))
-       (apply +')))
+              (* (best-word-length directional-robots line)
+                 (tools/read-long (re-find #"\d+" line)))))
+       (apply +)))
 
 (def part-1 (partial run 2))
 (def part-2 (partial run 25))

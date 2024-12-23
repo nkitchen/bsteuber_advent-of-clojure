@@ -79,4 +79,4 @@
   (part-1 "test1")
   (part-1 "input")
   (part-2 "test2")
-  (part-2 "input"))
+  (time (part-2 "input")))

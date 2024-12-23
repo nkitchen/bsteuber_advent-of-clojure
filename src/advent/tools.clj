@@ -100,7 +100,8 @@
        (into {})))
 
 (defn all-pairs [v]
-  (let [n (count v)]
+  (let [v (vec v)
+        n (count v)]
     (for [i (range n)
           j (range (inc i) n)]
       [(nth v i) (nth v j)])))
