@@ -4,7 +4,7 @@
 
 (defn read-int [s]
   (try
-    (Integer/parseInt (str s))
+    (Long/parseLong (str s))
     (catch Exception _)))
 
 (defn read-long [s]
@@ -13,10 +13,10 @@
     (catch Exception _)))
 
 (defn read-binary [s]
-  (Integer/parseInt s 2))
+  (Long/parseLong s 2))
 
 (defn read-hex [s]
-  (Integer/parseInt s 16))
+  (Long/parseLong s 16))
 
 (defn current-directory []
   (str "src/"
